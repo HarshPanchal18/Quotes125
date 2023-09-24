@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="100dp"
-    android:minHeight="100dp">
-</appwidget-provider>
+    android:minHeight="10dp"
+    android:resizeMode="vertical|horizontal" />
