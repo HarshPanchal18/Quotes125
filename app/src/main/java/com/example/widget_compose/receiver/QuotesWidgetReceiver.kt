@@ -1,7 +1,8 @@
-package com.example.widget_compose
+package com.example.widget_compose.receiver
 
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import com.example.widget_compose.QuotesWidget
 
 class QuotesWidgetReceiver: GlanceAppWidgetReceiver() {
 
