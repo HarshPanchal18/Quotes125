@@ -44,6 +44,27 @@ class QuoteRepository {
         return quoteList.random()
     }
 
+    fun getQuoteList(): List<String> {
+        return quoteList
+    }
+
+    /*private fun quotesFromJson() {
+        val jsonData = Quotes(quoteList)
+        val jsonArray = JSONArray(jsonData)
+        val quotes = ArrayList<String>()
+
+        for(i in 0 until jsonArray.length()){
+            quotes.add(jsonArray[i].toString())
+            println(quotes[i])
+        }
+
+        //val content = context.assets.readAssetsFile("quotes.json")
+    }
+
+    private fun AssetManager.readAssetsFile(filename: String): String {
+        return open(filename).bufferedReader().use { it.readText() }
+    }*/
+
     private val colorList: List<Color> = listOf(
         Color.White, Color.LightGray,
         Color(0xFF6750A4), Color(0xFF775260),

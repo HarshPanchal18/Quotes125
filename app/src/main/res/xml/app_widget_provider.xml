@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="100dp"
-    android:minHeight="10dp"
+    android:minWidth="250dp"
+    android:minHeight="40dp"
+    android:minResizeWidth="180dp"
+    android:minResizeHeight="40dp"
     android:resizeMode="vertical|horizontal" />
+
+<!--
+# of Cells                  Available Size (dp)
+(Columns or Rows)   	 (minWidth or minHeight)
+1                   	        40dp
+2                   	        110dp
+3                   	        180dp
+4                   	        250dp
+5                   	        320dp
+
+n                   	    70 × n − 30
+
+https://developer.android.com/guide/practices/ui_guidelines/widget_design.html
+-->

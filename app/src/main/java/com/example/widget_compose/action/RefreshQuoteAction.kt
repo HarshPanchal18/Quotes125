@@ -22,7 +22,7 @@ class RefreshQuoteAction : ActionCallback {
         ) { prefs ->
             prefs.toMutablePreferences()
                 .apply {
-                    val repo = QuoteRepository()
+                    val repo = QuoteRepository(context)
                     this[repo.currentQuotePreferenceKey] = repo.getRandomQuote()
                 }
         }
