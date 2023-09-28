@@ -2,6 +2,7 @@ package com.example.widget_compose
 
 import android.content.Context
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.GlanceId
@@ -35,34 +36,39 @@ class QuotesWidget : GlanceAppWidget() {
     * PreferencesGlanceStateDefinition - For creating a widget using datastore preference
     * */
     override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
+    private val repo = QuoteRepository()
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
 
             val preferences = currentState<Preferences>()
-            val repo = QuoteRepository()
             val currentQuote = preferences[repo.currentQuotePreferenceKey] ?: repo.getRandomQuote()
 
             MaterialTheme {
-                Column(
-                    modifier = GlanceModifier
-                        .background(repo.getRandomColor().copy(alpha = 0.85F))
-                        .padding(8.dp)
-                        .clickable(actionRunCallback<RefreshQuoteAction>()),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    Text(
-                        text = currentQuote,
-                        style = TextStyle(fontFamily = FontFamily.Monospace),
-                        modifier = GlanceModifier.fillMaxWidth()
-                    )
-                    Box(
-                        modifier = GlanceModifier
-                            .background(ImageProvider(R.mipmap.ic_launcher))
-                            .size(20.dp)
-                    ) {}
-                }
+                WidgetCard(currentQuote = currentQuote)
             }
+        }
+    }
+
+    @Composable
+    fun WidgetCard(currentQuote: String) {
+        Column(
+            modifier = GlanceModifier
+                .background(repo.getRandomColor().copy(alpha = 0.85F))
+                .padding(8.dp)
+                .clickable(actionRunCallback<RefreshQuoteAction>()),
+            horizontalAlignment = Alignment.End
+        ) {
+            Text(
+                text = currentQuote,
+                style = TextStyle(fontFamily = FontFamily.Monospace),
+                modifier = GlanceModifier.fillMaxWidth()
+            )
+            Box(
+                modifier = GlanceModifier
+                    .background(ImageProvider(R.mipmap.ic_launcher))
+                    .size(20.dp)
+            ) {}
         }
     }
 }

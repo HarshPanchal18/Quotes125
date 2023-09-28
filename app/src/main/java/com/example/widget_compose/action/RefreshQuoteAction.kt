@@ -20,9 +20,9 @@ class RefreshQuoteAction : ActionCallback {
             PreferencesGlanceStateDefinition,
             glanceId
         ) { prefs ->
+            val repo = QuoteRepository()
             prefs.toMutablePreferences()
                 .apply {
-                    val repo = QuoteRepository(context)
                     this[repo.currentQuotePreferenceKey] = repo.getRandomQuote()
                 }
         }
