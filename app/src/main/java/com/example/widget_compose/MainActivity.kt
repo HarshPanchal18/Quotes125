@@ -1,10 +1,13 @@
 package com.example.widget_compose
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,20 +33,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,7 +56,7 @@ class MainActivity : ComponentActivity() {
     private val repo = QuoteRepository()
     private lateinit var listState: LazyListState
     private lateinit var coroutineScope: CoroutineScope
-    //private var isScrollingDown by mutableStateOf(false)
+    private val quoteList = repo.getQuoteList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +71,18 @@ class MainActivity : ComponentActivity() {
     fun QuoteCard(currentQuote: String, index: Int) {
         Card(
             modifier = Modifier
+                .padding(
+                    bottom =
+                    if (index == quoteList.lastIndex + 1) 80.dp
+                    else 4.dp
+                )
                 .padding(4.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clickable {
+                    val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val quoteClip = ClipData.newPlainText("quote", currentQuote)
+                    cm.setPrimaryClip(quoteClip)
+                },
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
             Box(
@@ -111,19 +120,28 @@ class MainActivity : ComponentActivity() {
         ) {
             Image(
                 painter = painterResource(R.drawable.logo),
-                contentDescription = "",
+                contentDescription = "App logo",
                 modifier = Modifier
-                    .padding(start = 8.dp)
-                    .clip(RoundedCornerShape(24.dp))
-                    .size(75.dp)
+                    .padding(4.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .size(75.dp),
+                contentScale = ContentScale.FillHeight
             )
             Spacer(modifier = Modifier.width(20.dp))
-            Text(
-                text = stringResource(R.string.app_name),
-                fontSize = 20.sp,
-                fontFamily = FontFamily.Monospace,
-                modifier = Modifier.weight(1F)
-            )
+            Column(modifier = Modifier.weight(1F)) {
+                Text(
+                    text = stringResource(R.string.app_name),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Monospace,
+                )
+                Text(
+                    text = "Tap quote to copy.",
+                    fontSize = 16.sp,
+                    fontStyle = FontStyle.Italic,
+                    fontFamily = FontFamily.Monospace,
+                    color = Color.Gray
+                )
+            }
         }
     }
 
@@ -147,9 +165,7 @@ class MainActivity : ComponentActivity() {
                     .padding(it)
             ) {
                 LazyColumn(state = listState) {
-                    itemsIndexed(
-                        repo.getQuoteList()
-                    ) { index, currentQuote ->
+                    itemsIndexed(quoteList) { index, currentQuote ->
                         QuoteCard(currentQuote, index + 1)
                     }
                 }
@@ -169,22 +185,4 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
-
-    /*@Composable
-    fun LazyListState.isScrollingDown(): Boolean {
-        var prevIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
-        var prevScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
-        return remember(this) {
-            derivedStateOf {
-                if (prevIndex != firstVisibleItemIndex) {
-                    prevIndex > firstVisibleItemIndex
-                } else {
-                    prevScrollOffset >= firstVisibleItemScrollOffset
-                }.also {
-                    prevIndex = firstVisibleItemIndex
-                    prevScrollOffset = firstVisibleItemScrollOffset
-                }
-            }.value
-        }
-    }*/
 }
