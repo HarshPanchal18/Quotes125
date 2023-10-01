@@ -1,4 +1,4 @@
-package com.example.widget_compose
+package com.example.widget_compose.ui
 
 import android.content.Context
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +25,7 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontFamily
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.example.widget_compose.R
 import com.example.widget_compose.action.RefreshQuoteAction
 import com.example.widget_compose.repository.QuoteRepository
 
@@ -36,22 +37,21 @@ class QuotesWidget : GlanceAppWidget() {
     * PreferencesGlanceStateDefinition - For creating a widget using datastore preference
     * */
     override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
-    private val repo = QuoteRepository()
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
-
             val preferences = currentState<Preferences>()
+            val repo = QuoteRepository(context)
             val currentQuote = preferences[repo.currentQuotePreferenceKey] ?: repo.getRandomQuote()
 
             MaterialTheme {
-                WidgetCard(currentQuote = currentQuote)
+                WidgetCard(currentQuote = currentQuote, repo)
             }
         }
     }
 
     @Composable
-    fun WidgetCard(currentQuote: String) {
+    fun WidgetCard(currentQuote: String, repo: QuoteRepository) {
         Column(
             modifier = GlanceModifier
                 .background(repo.getRandomColor().copy(alpha = 0.85F))

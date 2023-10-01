@@ -25,6 +25,7 @@
         </activity>
         <receiver
             android:name=".receiver.QuotesWidgetReceiver"
+            android:label="Random Quote"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

@@ -6,7 +6,7 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
-import com.example.widget_compose.QuotesWidget
+import com.example.widget_compose.ui.QuotesWidget
 import com.example.widget_compose.repository.QuoteRepository
 
 class RefreshQuoteAction : ActionCallback {
@@ -20,7 +20,7 @@ class RefreshQuoteAction : ActionCallback {
             PreferencesGlanceStateDefinition,
             glanceId
         ) { prefs ->
-            val repo = QuoteRepository()
+            val repo = QuoteRepository(context)
             prefs.toMutablePreferences()
                 .apply {
                     this[repo.currentQuotePreferenceKey] = repo.getRandomQuote()

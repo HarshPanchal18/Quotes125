@@ -68,6 +68,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    implementation("com.google.code.gson:gson:2.10.1")
+
     val glanceVersion = "1.0.0"
     implementation("androidx.glance:glance:$glanceVersion")
     implementation("androidx.glance:glance-appwidget:$glanceVersion")

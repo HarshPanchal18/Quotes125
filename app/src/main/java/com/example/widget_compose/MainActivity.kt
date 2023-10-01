@@ -4,7 +4,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -53,16 +55,29 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val repo = QuoteRepository()
+    private lateinit var repo: QuoteRepository
     private lateinit var listState: LazyListState
     private lateinit var coroutineScope: CoroutineScope
-    private val quoteList = repo.getQuoteList()
+    private lateinit var quoteList: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        repo = QuoteRepository(applicationContext)
+        quoteList = repo.getQuoteList()
+
         setContent {
             WidgetComposeTheme {
                 HomeScreen()
+
+                var pressedTime: Long = 0
+                BackHandler(enabled = true) {
+                    if (pressedTime + 2000 > System.currentTimeMillis())
+                        finish()
+                    else
+                        Toast.makeText(baseContext, "Press back again to exit", Toast.LENGTH_SHORT).show()
+                    pressedTime = System.currentTimeMillis()
+                }
             }
         }
     }
