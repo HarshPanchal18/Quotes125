@@ -70,12 +70,14 @@ class MainActivity : ComponentActivity() {
             WidgetComposeTheme {
                 HomeScreen()
 
+                this.showToast("Have you added Home Screen widget? :)")
+
                 var pressedTime: Long = 0
                 BackHandler(enabled = true) {
                     if (pressedTime + 2000 > System.currentTimeMillis())
                         finish()
                     else
-                        Toast.makeText(baseContext, "Press back again to exit", Toast.LENGTH_SHORT).show()
+                        this.showToast("Press again to exit")
                     pressedTime = System.currentTimeMillis()
                 }
             }
@@ -97,6 +99,7 @@ class MainActivity : ComponentActivity() {
                     val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val quoteClip = ClipData.newPlainText("quote", currentQuote)
                     cm.setPrimaryClip(quoteClip)
+                    this.showToast("Copied to clipboard")
                 },
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
@@ -199,5 +202,9 @@ class MainActivity : ComponentActivity() {
                 contentDescription = "Back to top"
             )
         }
+    }
+
+    private fun Context.showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }
