@@ -3,6 +3,7 @@ package com.example.widget_compose.ui
 import android.content.Context
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.GlanceId
@@ -45,23 +46,23 @@ class QuotesWidget : GlanceAppWidget() {
             val currentQuote = preferences[repo.currentQuotePreferenceKey] ?: repo.getRandomQuote()
 
             MaterialTheme {
-                WidgetCard(currentQuote = currentQuote, repo)
+                WidgetCard(currentQuote = currentQuote)
             }
         }
     }
 
     @Composable
-    fun WidgetCard(currentQuote: String, repo: QuoteRepository) {
+    fun WidgetCard(currentQuote: String) {
         Column(
             modifier = GlanceModifier
-                .background(repo.getRandomColor().copy(alpha = 0.85F))
+                .background(Color.White)
                 .padding(8.dp)
                 .clickable(actionRunCallback<RefreshQuoteAction>()),
             horizontalAlignment = Alignment.End
         ) {
             Text(
                 text = currentQuote,
-                style = TextStyle(fontFamily = FontFamily.Monospace),
+                style = TextStyle(fontFamily = FontFamily.SansSerif),
                 modifier = GlanceModifier.fillMaxWidth()
             )
             Box(
