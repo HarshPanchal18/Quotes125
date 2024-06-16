@@ -16,9 +16,9 @@ class RefreshQuoteAction : ActionCallback {
         parameters: ActionParameters
     ) {
         updateAppWidgetState(
-            context,
-            PreferencesGlanceStateDefinition,
-            glanceId
+            context = context,
+            definition = PreferencesGlanceStateDefinition,
+            glanceId = glanceId
         ) { prefs ->
             val repo = QuoteRepository(context)
             prefs.toMutablePreferences()

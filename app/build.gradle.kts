@@ -70,7 +70,7 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
 
-    val glanceVersion = "1.1.0-alpha01"
+    val glanceVersion = "1.1.0"
     implementation("androidx.glance:glance:$glanceVersion")
     implementation("androidx.glance:glance-appwidget:$glanceVersion")
 }

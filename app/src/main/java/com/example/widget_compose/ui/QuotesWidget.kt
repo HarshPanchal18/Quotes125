@@ -12,6 +12,7 @@ import androidx.glance.ImageProvider
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.actionRunCallback
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
@@ -56,6 +57,7 @@ class QuotesWidget : GlanceAppWidget() {
         Column(
             modifier = GlanceModifier
                 .background(Color.White)
+                .cornerRadius(12.dp)
                 .padding(8.dp)
                 .clickable(actionRunCallback<RefreshQuoteAction>()),
             horizontalAlignment = Alignment.End
@@ -69,6 +71,7 @@ class QuotesWidget : GlanceAppWidget() {
                 modifier = GlanceModifier
                     .background(ImageProvider(R.mipmap.ic_launcher))
                     .size(20.dp)
+                    .cornerRadius(4.dp)
             ) {}
         }
     }
