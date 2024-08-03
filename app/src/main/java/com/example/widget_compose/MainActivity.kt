@@ -29,11 +29,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,11 +89,7 @@ class MainActivity : ComponentActivity() {
     fun QuoteCard(currentQuote: String, index: Int) {
         Card(
             modifier = Modifier
-                .padding(
-                    bottom =
-                    if (index == quoteList.lastIndex + 1) 80.dp
-                    else 4.dp
-                )
+                .padding(bottom = if (index == quoteList.size) 80.dp else 4.dp)
                 .padding(4.dp)
                 .fillMaxWidth()
                 .clickable {
@@ -166,13 +164,23 @@ class MainActivity : ComponentActivity() {
     fun HomeScreen() {
         listState = rememberLazyListState()
         coroutineScope = rememberCoroutineScope()
+        val showFab = remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
 
         Scaffold(
             topBar = { AppBar() },
             floatingActionButton = {
-                BackToTopFAB {
-                    coroutineScope.launch { listState.animateScrollToItem(index = 0) }
-                }
+                if (showFab.value)
+                    SmallFloatingActionButton(
+                        onClick = {
+                            coroutineScope.launch { listState.animateScrollToItem(index = 0) }
+                        },
+                        containerColor = Color(0xFFFFEB3B)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Back to top"
+                        )
+                    }
             }
         ) {
             Column(
@@ -186,19 +194,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-    }
-
-    @Composable
-    fun BackToTopFAB(onClick: () -> Unit) {
-        FloatingActionButton(
-            onClick = { onClick() },
-            containerColor = Color(0xFFFFEB3B)
-        ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "Back to top"
-            )
         }
     }
 

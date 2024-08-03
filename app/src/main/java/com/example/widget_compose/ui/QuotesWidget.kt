@@ -44,16 +44,16 @@ class QuotesWidget : GlanceAppWidget() {
         provideContent {
             val preferences = currentState<Preferences>()
             val repo = QuoteRepository(context)
-            val currentQuote = preferences[repo.currentQuotePreferenceKey] ?: repo.getRandomQuote()
+            val quote = preferences[repo.currentQuotePreferenceKey] ?: repo.getRandomQuote()
 
             MaterialTheme {
-                WidgetCard(currentQuote = currentQuote)
+                WidgetCard(quote = quote)
             }
         }
     }
 
     @Composable
-    fun WidgetCard(currentQuote: String) {
+    fun WidgetCard(quote: String) {
         Column(
             modifier = GlanceModifier
                 .background(Color.White)
@@ -63,7 +63,7 @@ class QuotesWidget : GlanceAppWidget() {
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                text = currentQuote,
+                text = quote,
                 style = TextStyle(fontFamily = FontFamily.SansSerif),
                 modifier = GlanceModifier.fillMaxWidth()
             )
